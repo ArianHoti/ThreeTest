@@ -1,0 +1,106 @@
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor />
+    <created>2018-10-24T13:56:34.175000</created>
+    <modified>2018-10-24T13:56:34.175000</modified>
+    <unit meter="1.0" name="meter" />
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="effect_Body001" name="effect_Body001">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0.0 0.0 0.0 1.0</color>
+            </emission>
+            <ambient>
+              <color>0.0 0.0 0.0 1.0</color>
+            </ambient>
+            <diffuse>
+              <color>0.57647061348 0.57647061348 0.57647061348 1.0</color>
+            </diffuse>
+            <specular>
+              <color>1 1 1 1.0</color>
+            </specular>
+            <shininess>
+              <float>0.0</float>
+            </shininess>
+            <reflective>
+              <color>0.0 0.0 0.0 1.0</color>
+            </reflective>
+            <reflectivity>
+              <float>0.0</float>
+            </reflectivity>
+            <transparent>
+              <color>0.0 0.0 0.0 1.0</color>
+            </transparent>
+            <transparency>
+              <float>1.0</float>
+            </transparency>
+          </phong>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>0</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_geometries>
+    <geometry id="geometry0" name="Body001">
+      <mesh>
+        <source id="cubenormals-array0">
+          <float_array count="180" id="cubenormals-array0-array">0 0 1 0 0 1 1 0 0 1 0 -0 0 0 -1 0 0 -1 1 0 -0 1 0 0 0 0 -1 0 0 -1 -1 0 0 -1 -0 -0 0 0 -1 0 0 -1 1 0 -0 1 0 0 0 0 -1 0 0 -1 -1 0 0 -1 -0 -0 0 0 -1 0 0 -1 1 0 -0 1 0 0 0 0 -1 0 0 -1 -1 0 0 -1 -0 -0 0 -0 -1 0 0 -1 -1 -0 -0 -1 0 0 0 1 0 0 1 0 0 1 -0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 -0 1 0 0 1 0 0 1 0 0 1 0 0 -1 -0 0 -1 0 0 -1 0 0 -1 0 0 -1 -0 0 -1 0 0 -1 -0 0 -1 0 0 -1 0 0 -1 0 -0 -1 0 0 -1 0 0 -1 0 0 -1 0</float_array>
+          <technique_common>
+            <accessor count="60" source="#cubenormals-array0-array" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="cubeverts-array0">
+          <float_array count="183" id="cubeverts-array0-array">0.7500011 -0.65 0.07785036 -0.7499989 0.65 0.07785036 -0.7499989 -0.65 0.07785036 0.7500011 0.65 0.07785036 0.7500011 -0.65 0.02492163 0.7500011 0.65 0.02492163 0.5768635 0.65 0.02492163 0.5768635 -0.65 0.02492163 0.5768635 0.65 -0.07851404 0.5768635 -0.65 -0.07851404 0.5118635 0.65 -0.07851404 0.5118635 -0.65 -0.07851404 0.5118635 -0.65 0.02215372 0.5118635 0.65 0.02215372 -0.01391254 -0.65 0.02215372 -0.01391254 0.65 0.02215372 -0.01391254 0.65 -0.07784628 -0.01391254 -0.65 -0.07784628 -0.07891254 0.65 -0.07784628 -0.07891254 -0.65 -0.07784628 -0.07891254 -0.65 0.02215372 -0.07891254 0.65 0.02215372 -0.5281154 0.65 0.02215372 -0.5281154 -0.65 0.02215372 -0.5281154 0.65 -0.07784628 -0.5281154 -0.65 -0.07784628 -0.5931154 0.65 -0.07784628 -0.5931154 -0.65 -0.07784628 -0.5931154 -0.65 0.02215372 -0.5931154 0.65 0.02215372 -0.7499989 -0.65 0.02215372 -0.7499989 0.65 0.02215372 0.5768635 0.65 0.02492163 0.7500011 0.65 0.07785036 0.7500011 0.65 0.02492163 0.5768635 0.65 -0.07851404 0.5118635 0.65 -0.07851404 -0.07891254 0.65 -0.07784628 -0.01391254 0.65 0.02215372 -0.01391254 0.65 -0.07784628 -0.07891254 0.65 0.02215372 -0.5931154 0.65 -0.07784628 -0.5281154 0.65 0.02215372 -0.5281154 0.65 -0.07784628 -0.5931154 0.65 0.02215372 -0.7499989 0.65 0.07785036 -0.7499989 0.65 0.02215372 0.7500011 -0.65 0.07785036 0.5768635 -0.65 0.02492163 0.7500011 -0.65 0.02492163 0.5118635 -0.65 0.02215372 0.5768635 -0.65 -0.07851404 0.5118635 -0.65 -0.07851404 -0.01391254 -0.65 0.02215372 -0.07891254 -0.65 -0.07784628 -0.01391254 -0.65 -0.07784628 -0.5281154 -0.65 0.02215372 -0.5931154 -0.65 -0.07784628 -0.5281154 -0.65 -0.07784628 -0.7499989 -0.65 0.07785036 -0.7499989 -0.65 0.02215372</float_array>
+          <technique_common>
+            <accessor count="61" source="#cubeverts-array0-array" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="cubeverts-array0-vertices">
+          <input semantic="POSITION" source="#cubeverts-array0" />
+        </vertices>
+        <triangles count="60" material="ref_Body001">
+          <input offset="1" semantic="NORMAL" source="#cubenormals-array0" />
+          <input offset="0" semantic="VERTEX" source="#cubeverts-array0-vertices" />
+          <p>0 0 1 0 2 0 3 1 1 1 0 1 4 2 5 2 0 2 5 3 3 3 0 3 6 4 5 4 7 4 7 5 5 5 4 5 8 6 6 6 7 6 8 7 7 7 9 7 10 8 8 8 9 8 10 9 9 9 11 9 10 10 11 10 12 10 13 11 10 11 12 11 14 12 15 12 12 12 15 13 13 13 12 13 16 14 15 14 14 14 16 15 14 15 17 15 18 16 16 16 17 16 18 17 17 17 19 17 18 18 19 18 20 18 21 19 18 19 20 19 22 20 21 20 20 20 22 21 20 21 23 21 24 22 22 22 23 22 24 23 23 23 25 23 26 24 24 24 25 24 26 25 25 25 27 25 26 26 27 26 28 26 29 27 26 27 28 27 29 28 28 28 30 28 31 29 29 29 30 29 1 30 31 30 2 30 2 31 31 31 30 31 32 32 33 32 34 32 13 33 33 33 32 33 35 34 13 34 32 34 36 35 13 35 35 35 37 36 38 36 39 36 37 37 40 37 38 37 41 38 42 38 43 38 41 39 44 39 42 39 45 40 42 40 44 40 46 41 45 41 44 41 45 42 33 42 13 42 45 43 13 43 38 43 45 44 38 44 40 44 45 45 40 45 42 45 47 46 48 46 49 46 47 47 50 47 48 47 50 48 51 48 48 48 50 49 52 49 51 49 53 50 54 50 55 50 20 51 54 51 53 51 56 52 57 52 58 52 28 53 57 53 56 53 56 54 59 54 28 54 59 55 60 55 28 55 47 56 59 56 50 56 50 57 59 57 53 57 53 58 59 58 20 58 20 59 59 59 56 59</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_materials>
+    <material id="mat_Body001" name="Body001">
+      <instance_effect url="#effect_Body001" />
+    </material>
+  </library_materials>
+  <library_visual_scenes>
+    <visual_scene id="myscene">
+      <node id="node0" name="node0">
+        <instance_geometry url="#geometry0">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="ref_Body001" target="#mat_Body001" />
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#myscene" />
+  </scene>
+</COLLADA>

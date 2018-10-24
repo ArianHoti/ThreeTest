@@ -1,0 +1,341 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/ColladaLoader.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		<script type="x-shader/x-vertex" id="vertexShader">
+			attribute float vertexDisplacement;
+			uniform float delta;
+			varying float vOpacity;
+			varying vec3 vUv;
+			void main(){
+				vUv = position;
+				vOpacity = vertexDisplacement;
+				vec3 p = position;
+				p.x+= sin(vertexDisplacement) * 50.0;
+				p.y+= sin(vertexDisplacement) * 50.0;
+				vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+				gl_Position = projectionMatrix * modelViewPosition;
+			}
+		</script>
+		<script type="x-shader/x-fragment" id="fragmentShader">
+			uniform float delta;
+			varying float vOpacity;
+			varying vec3 vUv;
+			void main(){
+				float r = 1.0 + cos(vUv.x * delta);
+				float g = 0.5 + sin(delta) * 0.5;
+				float b = 0.0;
+				gl_FragColor = vec4(r, g, b, vOpacity);
+			}
+		</script>
+		<script>
+			//renderer
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setClearColor(0x123456);
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+			//Scene & Camera
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 3000 );
+			var controls = new THREE.OrbitControls(camera);
+			
+			//light
+			var lCol=0xFFFFFF;
+			var lX=-8;
+			var lY=8;
+			var lZ=8;
+			var light = new THREE.PointLight(lCol, 0.9);
+			light.position.set(lX,lY,lZ);
+			scene.add(light);
+			//var light = new THREE.HemisphereLight(0x55ffff, 0x0000ff,1);
+			//light.position.set(lX,lY,lZ);
+			//scene.add(light);
+			var lBox=new THREE.TorusKnotBufferGeometry( 0.05, 0.01, 50, 50 );
+			var lMaterial= new THREE.MeshBasicMaterial({color: lCol});
+			var lCube=new THREE.Mesh(lBox, lMaterial);
+			lCube.position.set(lX,lY,lZ);
+			scene.add(lCube);
+			
+			//shader box/material
+			var sGeometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+			var uniforms={delta: {value:0}};
+			var sMaterial = new THREE.ShaderMaterial({
+				uniforms: uniforms,
+				vertexShader: document.getElementById('vertexShader').textContent,
+				fragmentShader: document.getElementById('fragmentShader').textContent,
+			});
+			var sCube = new THREE.Mesh(sGeometry, sMaterial);
+			sCube.position.set(2,0,0);
+			//scene.add(sCube);
+			
+			
+			var geometry = new THREE.BoxGeometry( 1, 1, 1, 0.1,0.1,0.1);
+			var material = new THREE.MeshLambertMaterial({ 
+			color: 0xFF0000
+			,map: new THREE.TextureLoader().load('muster.png')
+			});
+			var cube = new THREE.Mesh( geometry, material );
+			cube.position.set(4,0,-4);
+			scene.add( cube );
+			
+			//boden
+			var geometry2=new THREE.PlaneGeometry(10000, 10000, 100, 100);
+			var material2 = new THREE.MeshLambertMaterial({color: 0x8B5A2B});
+			var floor=new THREE.Mesh(geometry2, material2);
+			floor.rotation.x = -90 * Math.PI / 180;
+			floor.position.y= -1;
+			scene.add(floor);
+			
+			
+			
+			var mesh= new THREE.Sprite(new THREE.SpriteMaterial());
+			mesh.scale.set(1,1,1);
+			mesh.position.set(-2,0,0);
+			//scene.add(mesh);
+			
+			var a = new THREE.Vector3(-3, 3,0);
+			var b = new THREE.Vector3(-3,-3,0);
+			var c = new THREE.Vector3( 3,-3,0);
+			var geometry = new THREE.Geometry();
+			geometry.vertices.push(a,b,c);
+			geometry.faces.push(new THREE.Face3(0,1,2));
+			
+			camera.position.set(0,0,5);
+			var camX=0;
+			var camY=0;
+			var camZ=0;
+			camera.lookAt(camX,camY,camZ);
+			
+		
+			//shaderzeugs
+			var vertexDisplacement = new Float32Array(sGeometry.attributes.position.count);
+			for(var i=0;i<vertexDisplacement.length; i+=1){
+				vertexDisplacement[i] = Math.sin(i);
+			}
+			sGeometry.addAttribute('vertexDisplacement', new THREE.BufferAttribute(vertexDisplacement, 1));
+			
+			//keydown eventlistener
+			/*let camDelta=0;
+			document.addEventListener('keydown',(event)=>{
+				const keyName = event.key;
+				if(keyName==="ArrowUp"){
+					camera.position.z-=1; 
+				}
+				if(keyName==="ArrowDown"){
+					camera.position.z+=1;
+				}	
+				if(keyName==="ArrowLeft"){
+					camera.position.x-=1; 
+				}
+				if(keyName==="ArrowRight"){
+					camera.position.x+=1;
+				}
+				if(keyName==="s"){
+					camera.position.y-=1; 
+				}
+				if(keyName==="w"){
+					camera.position.y+=1;
+				}					
+			});*/
+			var axesHelper = new THREE.AxesHelper( 5 );
+			//scene.add( axesHelper );
+			//LOAD MODEL COLLADA LOADER 3D
+			var collada = new THREE.ColladaLoader();
+			collada.load('collada/VillingerMulde3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=-4;
+				scene.add(schüttbox);
+				
+			});
+			collada.load('collada/Stahlpalette3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=-2;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/StahlgestellFürSägeabschnitte3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=0;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/SchüttboxHalbhoch3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=2;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/Schüttbox3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=4;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/SchneidgestelleVonWVS3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=-4;
+				schüttbox.position.z=2;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/LangenbergerMulde3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=-0;
+				schüttbox.position.z=-3;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/KrätzekübelKlein3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=0;
+				schüttbox.position.z=2;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/KrätzekübelGroß3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=2;
+				schüttbox.position.z=2;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/Holzpalette3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=4;
+				schüttbox.position.z=2;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/Europalette3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=-4;
+				schüttbox.position.z=4;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/Bolzentisch3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=-2;
+				schüttbox.position.z=4;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/BolzentischMitErhöhung3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=0;
+				schüttbox.position.z=4;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/Bolzengestell8&113D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=2;
+				schüttbox.position.z=4;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/Bolzengestell153D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=4;
+				schüttbox.position.z=4;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/BolzengestellFürAbfallbolzen3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=-2;
+				schüttbox.position.z=6;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/BolzengestellFürAbfallbolzenHoch3D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=0;
+				schüttbox.position.z=6;
+				scene.add(schüttbox);
+			});
+			collada.load('collada/BolzengestellFürAbfallbolzenK33D.dae',function(object){
+				schüttbox=object.scene;
+				schüttbox.position.x=2;
+				schüttbox.position.z=6;
+				scene.add(schüttbox);
+			});
+			
+			//renderer (animationen)
+			var downY=true;
+			var downX=true;
+			var counter=0;
+			var radius=2;
+			var x=0;
+			var goUp=true;
+			var delta = 0;
+			
+			var animate = function () {
+				requestAnimationFrame( animate );
+
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+				
+				
+				//lightMove(0.01);
+				//lightMoveUpDown(0.01);
+				//lightMoveRandom(60);
+				//lightMoveRound(10,radius);
+				
+				
+				//camera.lookAt(0,0,0);
+				
+				controls.update();
+				renderer.render( scene, camera );
+			};
+			
+			var lightMove = function(speed){
+				if(lCube.position.x<2&&Math.round(lCube.position.y)==2){
+					lCube.position.x+=speed;
+					light.position.x+=speed;
+				}else if(Math.round(lCube.position.x)==2&&lCube.position.y>-2){
+					lCube.position.y-=speed;
+					light.position.y-=speed;
+				}else if(lCube.position.x>-2&&Math.round(lCube.position.y)==-2){
+					lCube.position.x-=speed;
+					light.position.x-=speed;
+				}else if(Math.round(lCube.position.x)==-2&&lCube.position.y<2){
+					lCube.position.y+=speed;
+					light.position.y+=speed;
+				}
+			}
+			
+			var lightMoveUpDown = function(speed){
+				if(Math.round(lCube.position.y)==2){
+					downY=true;
+				}
+				if(Math.round(lCube.position.y)==-2){
+					downY=false;
+				}
+				if(downY){
+					lCube.position.y-=speed;
+					light.position.y-=speed;
+				}else{
+					lCube.position.y+=speed;
+					light.position.y+=speed;
+				}
+			}
+			
+			var lightMoveRandom = function(countTo){
+				counter+=1;
+				if(Math.round(counter) == Math.round(countTo)){
+					counter = 0;
+					lCube.position.x=Math.random()*4-2;
+					light.position.x=lCube.position.x;
+					lCube.position.y=Math.random()*4-2;
+					light.position.y=lCube.position.y;
+					lCube.position.z=Math.random()*2;
+					light.position.z=lCube.position.z;
+				}
+			}
+			
+			var lightMoveRound = function(slower, radius){
+				lCube.position.x = Math.sin(delta/slower) * radius;
+				lCube.position.y = Math.cos(delta/slower) * radius;
+				light.position.x = Math.sin(delta/slower) * radius;
+				light.position.y = Math.cos(delta/slower) * radius;
+			}
+
+			animate();
+		</script>
+	</body>
+</html>
