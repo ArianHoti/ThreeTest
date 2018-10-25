@@ -49,16 +49,19 @@
 			var controls = new THREE.OrbitControls(camera);
 			
 			//light
-			var lCol=0xFFFFFF;
-			var lX=-8;
-			var lY=8;
-			var lZ=8;
-			var light = new THREE.PointLight(lCol, 0.9);
+			var lCol=0x404040;
+			var lX=-10;
+			var lY=10;
+			var lZ=10;
+			var light = new THREE.PointLight(lCol, 1);
 			light.position.set(lX,lY,lZ);
 			scene.add(light);
 			//var light = new THREE.HemisphereLight(0x55ffff, 0x0000ff,1);
 			//light.position.set(lX,lY,lZ);
 			//scene.add(light);
+			var light2 = new THREE.AmbientLight( 0x404040 ); // soft white light
+			scene.add( light2 );
+			
 			var lBox=new THREE.TorusKnotBufferGeometry( 0.05, 0.01, 50, 50 );
 			var lMaterial= new THREE.MeshBasicMaterial({color: lCol});
 			var lCube=new THREE.Mesh(lBox, lMaterial);
@@ -146,6 +149,9 @@
 					camera.position.y+=1;
 				}					
 			});*/
+			
+			
+			//Achsen anzeige
 			var axesHelper = new THREE.AxesHelper( 5 );
 			//scene.add( axesHelper );
 			//LOAD MODEL COLLADA LOADER 3D
@@ -185,8 +191,11 @@
 			collada.load('collada/LangenbergerMulde3D.dae',function(object){
 				schüttbox=object.scene;
 				schüttbox.position.x=-0;
+				schüttbox.position.y=-1+827.4/1000
 				schüttbox.position.z=-3;
 				scene.add(schüttbox);
+				
+				sizeofDesk(schüttbox);
 			});
 			collada.load('collada/KrätzekübelKlein3D.dae',function(object){
 				schüttbox=object.scene;
@@ -254,6 +263,20 @@
 				schüttbox.position.z=6;
 				scene.add(schüttbox);
 			});
+			//Höhe vom loader herausfinden
+			function sizeofDesk(dae) {
+
+				var helper = new THREE.BoundingBoxHelper(dae, 0xff0000);
+				helper.update();
+				// If you want a visible bounding box
+				scene.add(helper);
+				// If you just want the numbers
+				var min = helper.position.min(helper.position);
+				var max = helper.position.max(helper.position);
+
+				console.log(min);
+				console.log(max);
+			}
 			
 			//renderer (animationen)
 			var downY=true;
